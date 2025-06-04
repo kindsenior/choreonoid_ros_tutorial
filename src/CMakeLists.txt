@@ -1,0 +1,2 @@
+choreonoid_add_simple_controller(RttTankController RttTankController.cpp)
+target_link_libraries(RttTankController ${roscpp_LIBRARIES})

@@ -44,7 +44,9 @@ public:
             io->enableIO(joint);
         }
 
-        subscriber = node->subscribe("cmd_vel", 1, &RttTankController::command_velocity_callback, this);    return true;
+        subscriber = node->subscribe("cmd_vel", 1, &RttTankController::command_velocity_callback, this);
+
+        return true;
     }
 
     void command_velocity_callback(const geometry_msgs::Twist& msg) {
@@ -81,5 +83,3 @@ public:
     }
 };
 CNOID_IMPLEMENT_SIMPLE_CONTROLLER_FACTORY(RttTankController)
-
-

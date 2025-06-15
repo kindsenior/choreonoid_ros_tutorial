@@ -32,7 +32,7 @@ items:
             jointDisplacements: [
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0 ]
-            initialRootPosition: [ 0, 0, 0 ]
+            initialRootPosition: [ 0, 0, 0.42 ]
             initialRootAttitude: [
               1, 0, 0,
               0, 1, 0,
@@ -43,8 +43,21 @@ items:
             lock_location: false
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
+          children:
+            -
+              id: 3
+              name: "InferenceJoystickController"
+              plugin: Body
+              class: SimpleControllerItem
+              data:
+                isNoDelayMode: false
+                controllerOptions: ""
+                controller: "RtGo2InferenceJoystickController"
+                base_directory: "Controller directory"
+                reloading: false
+                export_symbols: false
         -
-          id: 3
+          id: 4
           name: "HVAC2023_athletics_field"
           plugin: Body
           class: BodyItem
@@ -69,6 +82,45 @@ items:
             lock_location: false
             scene_sensitive: true
             zmp: [ 0, 0, 0 ]
+        -
+          id: 5
+          name: "AISTSimulator"
+          plugin: Body
+          class: AISTSimulatorItem
+          data:
+            time_step: 0.001
+            realtime_sync_mode: compensatory
+            recording: full
+            time_range_mode: unlimited
+            time_length: 180
+            is_active_control_time_range_mode: false
+            output_all_link_positions: false
+            output_device_states: true
+            use_controller_threads: true
+            record_collision_data: false
+            controller_options: ""
+            block_scene_view_edit_mode: false
+            dynamicsMode: "Forward dynamics"
+            integrationMode: semi-implicit_euler
+            gravity: [ 0, 0, -9.80665 ]
+            min_friction_coefficient: 0
+            max_friction_coefficient: 100
+            cullingThresh: 0.005
+            contactCullingDepth: 0.05
+            errorCriterion: 0.001
+            maxNumIterations: 25
+            contactCorrectionDepth: 0.00025
+            contactCorrectionVelocityRatio: 5
+            kinematicWalking: false
+            2Dmode: false
+            oldAccelSensorMode: false
+        -
+          id: 6
+          name: "WorldROS"
+          plugin: ROS
+          class: WorldROSItem
+          data:
+            max_clock_publishing_rate: 100
 views:
   -
     id: 0
@@ -81,7 +133,7 @@ views:
     class: ItemTreeView
     mounted: true
     state:
-      expanded: [ 1 ]
+      expanded: [ 1, 2, 3, 4 ]
   -
     id: 2
     plugin: Base
@@ -151,6 +203,11 @@ views:
       yz_grid_color: [ 0.9, 0.9, 0.9 ]
   -
     id: 5
+    plugin: Base
+    class: VirtualJoystickView
+    mounted: true
+  -
+    id: 6
     plugin: Body
     class: JointDisplacementView
     mounted: true
@@ -164,7 +221,7 @@ views:
       limit_ranges: false
       show_selected_joints: false
   -
-    id: 6
+    id: 7
     plugin: Body
     class: LinkDeviceListView
     mounted: true
@@ -172,7 +229,7 @@ views:
       element_type: all
       listing_mode: list
   -
-    id: 7
+    id: 8
     plugin: Body
     class: LinkPositionView
     mounted: true
@@ -185,12 +242,12 @@ views:
       show_rotation_matrix: false
       target_link_type: ik_link
   -
-    id: 8
+    id: 9
     plugin: Body
     class: LinkPropertyView
     mounted: true
   -
-    id: 9
+    id: 10
     plugin: Python
     class: PythonConsoleView
     mounted: true
@@ -219,8 +276,8 @@ toolbars:
     lazyCollisionDetectionMode: true
 Body:
   "BodySelectionManager":
-    current_body_item: 2
-    current_link: "base"
+    current_body_item: 4
+    current_link: "Base"
   "KinematicFaultChecker":
     checkJointPositions: true
     angleMargin: 0
@@ -238,7 +295,7 @@ Body:
         show_cm_projection: false
         show_zmp: false
       -
-        body_item: 3
+        body_item: 4
         show_cm: false
         show_cm_projection: false
         show_zmp: false
@@ -271,7 +328,7 @@ viewAreas:
                   views: [ 1 ]
                 -
                   type: pane
-                  views: [ 0, 8 ]
+                  views: [ 0, 9 ]
                   current: 0
             -
               type: splitter
@@ -283,7 +340,7 @@ viewAreas:
                   views: [ 4 ]
                 -
                   type: pane
-                  views: [ 3, 9 ]
+                  views: [ 3, 10 ]
                   current: 3
         -
           type: splitter
@@ -300,11 +357,19 @@ viewAreas:
               children:
                 -
                   type: pane
-                  views: [ 7 ]
+                  views: [ 8 ]
                 -
-                  type: pane
-                  views: [ 6, 5 ]
-                  current: 5
+                  type: splitter
+                  orientation: vertical
+                  sizes: [ 225, 224 ]
+                  children:
+                    -
+                      type: pane
+                      views: [ 7, 6 ]
+                      current: 6
+                    -
+                      type: pane
+                      views: [ 5 ]
 layoutOfToolBars:
   rows:
     -

@@ -1,0 +1,14 @@
+<launch>
+  <param name="use_sim_time" value="true" />
+  <param name="robot_description" textfile="$(env HOME)/genesis_ws/Genesis/genesis/assets/urdf/go2/urdf/go2.urdf" />
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <remap from="joint_states" to="/go2/joint_state" />
+  </node>
+
+  <!-- <node pkg="teleop_twist_keyboard" name="keyboard_teleop" type="teleop_twist_keyboard.py" -->
+  <!--       output="screen" launch-prefix="xterm -e"/> -->
+  <node pkg="choreonoid_ros" name="choreonoid" type="choreonoid"
+        args="$(find choreonoid_ros_tutorial)/project/ros_go2_inference_athletic.cnoid --start-simulation">
+  </node>
+</launch>

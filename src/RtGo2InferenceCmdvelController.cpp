@@ -228,6 +228,7 @@ public:
         command[0] = command_velocity.linear.x;
         command[1] = command_velocity.linear.y;
         command[2] = command_velocity.angular.z;
+        ROS_INFO("command = [%.3f, %.3f, %.3f]", command.x(), command.y(), command.z());
 
         // get current states
         const auto rootLink = ioBody->rootLink();

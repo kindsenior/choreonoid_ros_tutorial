@@ -2,6 +2,7 @@ choreonoid_add_simple_controller(RttTankController RttTankController.cpp)
 target_link_libraries(RttTankController ${roscpp_LIBRARIES})
 
 # inference
+set(Torch_DIR "$ENV{HOME}/genesis_ws/libtorch/share/cmake/Torch")
 find_package(Torch REQUIRED)
 
 # cmdvel

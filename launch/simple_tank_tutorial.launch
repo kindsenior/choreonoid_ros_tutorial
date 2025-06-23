@@ -3,7 +3,7 @@
   <param name="robot_description" textfile="$(find choreonoid_tutorial)/models/SimpleTank.urdf" />
 
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
-    <remap from="joint_states" to="/SimpleTank/joint_state" />
+    <remap from="joint_states" to="/SimpleTank/joint_states" />
   </node>
 
   <node pkg="teleop_twist_keyboard" name="keyboard_teleop" type="teleop_twist_keyboard.py"
@@ -11,4 +11,9 @@
   <node pkg="choreonoid_ros" name="choreonoid" type="choreonoid"
         args="$(find choreonoid_ros_tutorial)/project/ros_tank_tutorial.cnoid --start-simulation">
   </node>
+
+  <!-- static TF between Kinect and TURRET_P -->
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="static_kinect_tf"
+        args="0.03 0 0.17 0 0 0 TURRET_P Kinect"/>
 </launch>

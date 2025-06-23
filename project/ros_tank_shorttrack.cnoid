@@ -57,11 +57,13 @@ items:
                 export_symbols: false
             -
               id: 4
-              name: "BodyPublisher"
+              name: "BodyROS"
               plugin: ROS
-              class: BodyPublisherItem
+              class: BodyROSItem
               data:
-                max_publishing_rate: 30
+                body_ros_version: 0
+                joint_state_publication: true
+                joint_state_update_rate: 100
         -
           id: 5
           name: "AISTSimulator"
@@ -290,7 +292,7 @@ views:
     mounted: true
 toolbars:
   "TimeBar":
-    current_time: 20.614
+    current_time: 0
     min_time: 0
     max_time: 237.064
     frame_rate: 1000
@@ -313,8 +315,8 @@ toolbars:
     lazyCollisionDetectionMode: true
 Body:
   "BodySelectionManager":
-    current_body_item: 7
-    current_link: "Base"
+    current_body_item: 2
+    current_link: "CHASSIS"
   "KinematicFaultChecker":
     checkJointPositions: true
     angleMargin: 0

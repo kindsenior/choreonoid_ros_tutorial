@@ -1,0 +1,51 @@
+<launch>
+  <!-- <arg name="manager" default="plane_detector_manager" /> -->
+  <!-- <arg name="input_cloud" default="/SimpleTank/Kinect/point_cloud" /> -->
+  <!-- <arg name="sensor_frame" default="Kinect" /> -->
+
+  <!-- <node name="$(arg manager)" pkg="nodelet" type="nodelet" args="manager" output="screen"/> -->
+
+  <!-- <node name="input_relay" pkg="nodelet" type="nodelet" -->
+  <!--       args="load jsk_topic_tools/Relay $(arg manager)" output="screen"> -->
+  <!--   <param name="~input" value="$(arg input_cloud)" /> -->
+  <!-- </node> -->
+
+  <!-- <node name="multi_plane_estimate" pkg="nodelet" type="nodelet" -->
+  <!--       args="load jsk_pcl/OrganizedMultiPlaneSegmentation $(arg manager)" -->
+  <!--       output="screen"> -->
+  <!--   <remap from="~input" to="input_relay/output" /> -->
+  <!--   <param name="max_curvature" value="0.01" /> -->
+  <!--   <param name="estimate_normal" value="true" /> -->
+  <!--   <param name="min_size" value="10" /> -->
+  <!--   <param name="sensor_frame" value="$(arg sensor_frame)" /> -->
+  <!-- </node> -->
+
+  <!-- <node name="polygon_magnifier" pkg="nodelet" type="nodelet" -->
+  <!--       args="load jsk_pcl_utils/PolygonMagnifier $(arg manager)" -->
+  <!--       output="screen"> -->
+  <!--   <remap from="~input" to="multi_plane_estimate/output_refined_polygon" /> -->
+  <!-- </node> -->
+
+
+  <arg name="manager" default="simpletank_tabletop_object_detector_nodelet_manager" />
+  <arg name="POINT_CLOUD" value="/SimpleTank/Kinect/point_cloud" />
+  <arg name="machine" value="localhost"/>
+  <arg name="launch_tracking" default="false" />
+  <arg name="publish_objects_tf" default="true" />
+
+  <arg name="target_frame_id" default="CHASSIS" />
+
+  <include file="$(find jsk_pcl_ros)/sample/tabletop_object_detector.launch">
+    <arg name="input" value="$(arg POINT_CLOUD)" />
+    <arg name="sensor_frame" value="/Kinect" />
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="machine" value="$(arg machine)" />
+    <arg name="launch_openni" value="false" />
+    <arg name="launch_tracking" value="$(arg launch_tracking)" />
+    <!-- <arg name="launch_rviz" value="false" /> -->
+    <arg name="launch_rviz" value="true" />
+    <arg name="publish_tf" value="$(arg publish_objects_tf)" />
+    <arg name="target_frame_id" value="$(arg target_frame_id)" />
+    <arg name="plane_min_size" value="10" />
+  </include>
+</launch>

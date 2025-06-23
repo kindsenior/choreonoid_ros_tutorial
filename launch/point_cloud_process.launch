@@ -1,0 +1,23 @@
+<launch>
+  <arg name="gui" default="true" />
+
+  <!-- HSI color filter -->
+  <node pkg="jsk_pcl_ros" type="hsi_color_filter" name="hsi_filter" output="screen">
+    <remap from="~input" to="/SimpleTank/Kinect/point_cloud"/>
+    <rosparam>
+      use_indices: false
+      keep_organized: true
+    </rosparam>
+    <param name="h_limit_min" value="0"/>
+    <param name="h_limit_max" value="120"/>
+    <param name="s_limit_min" value="10"/>
+    <param name="s_limit_max" value="255"/>
+    <param name="i_limit_min" value="10"/>
+    <param name="i_limit_max" value="255"/>
+  </node>
+
+  <group if="$(arg gui)">
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find jsk_pcl_ros)/sample/rviz/hsi_color_filter.rviz"/>
+  </group>
+
+</launch>

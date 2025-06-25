@@ -6,6 +6,7 @@
 using namespace cnoid;
 
 class RttTankController : public SimpleController {
+    Link* root_link;
     std::unique_ptr<ros::NodeHandle> node;
     ros::Subscriber subscriber;
     geometry_msgs::Twist latest_command_velocity;
@@ -26,6 +27,8 @@ public:
     virtual bool initialize(SimpleControllerIO* io) override {
         std::ostream& os = io->os();
         Body* body = io->body();
+        io->enableInput(body->rootLink(), LinkPosition);
+        root_link = io->body()->rootLink();
         dt = io->timeStep();
 
         trackL = body->link("TRACK_L");
@@ -55,6 +58,13 @@ public:
     }
 
     virtual bool control() override {
+        Isometry3 T = root_link->position();
+        Vector3 pos = T.translation();
+        ROS_INFO("Position: [%.3f, %.3f, %.3f]", pos.x(), pos.y(), pos.z());
+        Matrix3 rot = T.rotation();
+        Vector3 rpy = rot.eulerAngles(2, 1, 0); // yaw (Z), pitch (Y), roll (X)
+        ROS_DEBUG("Orientation (RPY): [%.3f, %.3f, %.3f] rad", rpy.z(), rpy.y(), rpy.x());
+
         geometry_msgs::Twist command_velocity;
         {
             std::lock_guard<std::mutex> lock(command_velocity_mutex);
